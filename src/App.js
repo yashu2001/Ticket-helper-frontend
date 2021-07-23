@@ -1,25 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+// Core React imports
+import React from "react";
+// Router imports
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from "react-router-dom";
+// Redux imports
+import { useSelector } from "react-redux";
+// Component Imports
+import Auth from "./Pages/Auth/Index";
+import DashBoard from "./Pages/DashBoard/Index";
+import Conversations from "./Pages/Conversations/Index";
+import Layout from "./Components/Layout";
+// Exporting root app component
+export default function App() {
+  const user = useSelector((state) => state.user);
 
-function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      {user.authenticated ? (
+        <Layout>
+          <Switch>
+            <Route path="/conversations" component={Conversations} />
+            <Route path="/" component={DashBoard} />
+          </Switch>
+        </Layout>
+      ) : (
+        <Switch>
+          <Route path="/" component={Auth} />
+        </Switch>
+      )}
+    </Router>
   );
 }
-
-export default App;
