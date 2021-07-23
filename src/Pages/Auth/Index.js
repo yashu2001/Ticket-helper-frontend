@@ -100,6 +100,10 @@ export default function Auth() {
     window.FB.login(
       (response) => {
         if (response.status === "connected") {
+          localStorage.setItem(
+            "accessToken",
+            response.authResponse.accessToken
+          );
           window.FB.api("/me", { fields: "email,name,picture" }, (data) => {
             window.FB.api(
               `${response.authResponse.userID}/accounts/?access_token${response.authResponse.accessToken}`,
